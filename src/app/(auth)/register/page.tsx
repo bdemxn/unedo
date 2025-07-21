@@ -54,7 +54,8 @@ export function RegisterForm() {
 			},
 			{
 				loading: "Iniciando sesión...",
-				success: (data) => `Bienvenido ${data.data?.user.name}, disfruta de la experiencia Unedo`,
+				success: (data) =>
+					`Bienvenido ${data.data?.user.name}, disfruta de la experiencia Unedo`,
 				error: (error) => `Ups, ha habido un error: ${error.message}`,
 			},
 		);
