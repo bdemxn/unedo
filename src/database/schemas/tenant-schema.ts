@@ -9,6 +9,7 @@ export const billing = pgTable("billing", {
 	orgId: text("org_id")
 		.notNull()
 		.references(() => organization.id, { onDelete: "cascade" }),
+	subscriptionId: text("subscription_id").notNull(),
 	plan: text("plan", { enum: ["free", "basic", "pro", "enterprise"] })
 		.notNull()
 		.default("free"),

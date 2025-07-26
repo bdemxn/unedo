@@ -49,7 +49,14 @@ export const auth = betterAuth({
 			createCustomerOnSignUp: true,
 			use: [
 				checkout({
-					products: [],
+					products: [
+						{
+							productId: "pdt_Sfgjfw3Vw23DSAD6WZiyx",
+							slug: "basic-plan",
+						},
+					],
+					authenticatedUsersOnly: true,
+					successUrl: "/api/checkouts",
 				}),
 				portal(),
 				webhooks({

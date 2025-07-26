@@ -19,3 +19,10 @@ export const registerSchema = loginSchema
 		error: "Las contraseñas no coinciden",
 		path: ["confirmPassword"],
 	});
+
+export const workspaceSubscriptionSchema = z.object({
+	organizationName: z
+		.string("El nombre es requerido")
+		.min(4, "El nombre es muy corto"),
+	plan: z.enum(["free", "basic-plan", "pro-plan"]),
+});

@@ -15,6 +15,7 @@ import { authClient } from "@/lib/auth-client";
 import { registerSchema } from "@/validations/auth-validation";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type z from "zod";
 
@@ -43,19 +44,26 @@ export function RegisterForm() {
 		formState: { errors },
 	} = useAuthForm(registerSchema);
 
+	const router = useRouter();
+
 	const onSubmit = (values: z.infer<typeof registerSchema>) => {
 		toast.promise(
 			async () => {
-				return await authClient.signUp.email({
+				const { data, error } = await authClient.signUp.email({
 					email: values.email,
 					name: values.fullname,
 					password: values.password,
 				});
+
+				if (error) throw error;
+				return data;
 			},
 			{
 				loading: "Iniciando sesión...",
-				success: (data) =>
-					`Bienvenido ${data.data?.user.name}, disfruta de la experiencia Unedo`,
+				success: (data) => {
+					router.push("/workspace?create=new");
+					return `Bienvenido ${data.user.name}, disfruta de la experiencia Unedo`;
+				},
 				error: (error) => `Ups, ha habido un error: ${error.message}`,
 			},
 		);
@@ -113,7 +121,13 @@ export function RegisterForm() {
 				</span>
 			</div>
 
-			<Button type="button" variant="outline">
+			<Button
+				type="button"
+				variant="outline"
+				onClick={async () =>
+					await authClient.signIn.social({ provider: "google" })
+				}
+			>
 				<Image
 					src="/google.svg"
 					alt="Google login for Unedo"

@@ -12,5 +12,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ["/app"],
+	matcher: ["/workspace/:path*"],
 };

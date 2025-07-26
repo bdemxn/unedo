@@ -1,6 +1,6 @@
 {
-	"id": "c43d9f26-ae3f-4bf1-957e-78350e5962a1",
-	"prevId": "00000000-0000-0000-0000-000000000000",
+	"id": "dcd69839-f343-4db0-88d6-586ce6ad6ed6",
+	"prevId": "c43d9f26-ae3f-4bf1-957e-78350e5962a1",
 	"version": "7",
 	"dialect": "postgresql",
 	"tables": {
@@ -976,6 +976,12 @@
 				},
 				"org_id": {
 					"name": "org_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"subscription_id": {
+					"name": "subscription_id",
 					"type": "text",
 					"primaryKey": false,
 					"notNull": true

@@ -17,6 +17,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
 import type z from "zod";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
 	return (
@@ -45,17 +46,25 @@ export function LoginForm() {
 		formState: { errors },
 	} = useAuthForm(loginSchema);
 
+	const router = useRouter();
+
 	const onSubmit = (values: z.infer<typeof loginSchema>) => {
 		toast.promise(
 			async () => {
-				return await authClient.signIn.email({
+				const { data, error } = await authClient.signIn.email({
 					email: values.email,
 					password: values.password,
 				});
+
+				if (error) throw error;
+				return data;
 			},
 			{
 				loading: "Iniciando sesión...",
-				success: (data) => `Bienvenido ${data.data?.user.name}`,
+				success: (data) => {
+					router.push("/workspace");
+					return `Bienvenido ${data.user.name}`;
+				},
 				error: (error) => `Ups, ha habido un error: ${error.message}`,
 			},
 		);
@@ -89,7 +98,13 @@ export function LoginForm() {
 				</span>
 			</div>
 
-			<Button type="button" variant="outline">
+			<Button
+				type="button"
+				variant="outline"
+				onClick={async () =>
+					await authClient.signIn.social({ provider: "google" })
+				}
+			>
 				<Image
 					src="/google.svg"
 					alt="Google login for Unedo"
